@@ -10,7 +10,7 @@ void			initCurses()
 		Sleep(100);
 		AllocConsole();
 	}
-	SetConsoleTitle("Street Gears Resurrection Debug");
+	SetConsoleTitleA("Street Gears Resurrection Debug");
 	initscr();
 	noecho();
 }
