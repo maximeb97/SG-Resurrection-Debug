@@ -9,12 +9,12 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 
 ## Features
 - Player position
--- X
--- Y
--- Z
+	- X
+	- Y
+	- Z
 - Packets log
--- Output (send)
--- Input (recv)
+	- Output (send)
+	- Input (recv)
 
 ## Hooks
 
@@ -22,7 +22,6 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 - recv (Ws2_32.dll) for packets log
 - 0x0046A3EF (StreetGear.exe) for player position
 
----
 
 ## Screen
 
