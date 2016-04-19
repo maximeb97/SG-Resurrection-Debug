@@ -1,7 +1,7 @@
+#include <Windows.h>
 #include "curses.h"
 #include "coord.h"
 #include "packetlog.h"
-#include <Windows.h>
 
 void		*DetourFunc(BYTE *src, const BYTE *dst, const int len)
 {

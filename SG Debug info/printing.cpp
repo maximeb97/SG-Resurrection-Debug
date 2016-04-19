@@ -2,21 +2,21 @@
 #include "coord.h"
 #include "packetlog.h"
 
-void		print_PlayerPos()
+void				print_PlayerPos()
 {
 	t_position		*pos;
 
-	mvprintw(0, 65, "    Player Pos ");
-	mvprintw(1, 65, "  _____________");
-	mvprintw(2, 65, "X |");
-	mvprintw(3, 65, "Y |");
-	mvprintw(4, 65, "Z |");
-	mvprintw(5, 65, "  |____________");
+	mvprintw(0, 63, "    Player Pos ");
+	mvprintw(1, 63, "  _______________");
+	mvprintw(2, 63, "X |");
+	mvprintw(3, 63, "Y |");
+	mvprintw(4, 63, "Z |");
+	mvprintw(5, 63, "  |______________");
 	if ((pos = getPosition()) != 0)
 	{
-		mvprintw(2, 69, "%.2f  ", pos->x);
-		mvprintw(3, 69, "%.2f  ", pos->y);
-		mvprintw(4, 69, "%.2f  ", pos->z);
+		mvprintw(2, 67, "%.5f  ", pos->x);
+		mvprintw(3, 67, "%.5f  ", pos->y);
+		mvprintw(4, 67, "%.5f  ", pos->z);
 	}
 }
 

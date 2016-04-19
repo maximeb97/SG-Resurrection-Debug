@@ -4,7 +4,6 @@
 #include "detours.h"
 
 #pragma comment(lib, "detours.lib")
-#pragma comment(lib, "ws2_32.lib")
 #pragma warning(disable: 4996)
 
 typedef int					(*t_WSA)(SOCKET s, char *buf, int len, int flags);

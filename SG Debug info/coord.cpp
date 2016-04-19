@@ -1,5 +1,5 @@
-#include "coord.h"
 #include <Windows.h>
+#include "coord.h"
 
 t_position				*pos = 0;
 void					*jmpBack = (void *)0x0046A3EF;
