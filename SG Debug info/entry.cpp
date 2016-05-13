@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include "curses.h"
 #include "debug.h"
+#include "printing.h"
 
 void			initCurses()
 {
@@ -10,6 +11,7 @@ void			initCurses()
 		Sleep(100);
 		AllocConsole();
 	}
+	system("mode 120,45");
 	SetConsoleTitleA("Street Gears Resurrection Debug");
 	initscr();
 	noecho();
@@ -26,6 +28,7 @@ int				MainThread()
 		initDebug();
 		while (1)
 		{
+			print_debuginfo();
 			print_PlayerPos();
 			print_PacketInfo();
 			refresh();

@@ -2,6 +2,7 @@
 #include "curses.h"
 #include "coord.h"
 #include "packetlog.h"
+#include "DebugStr.h"
 
 void		*DetourFunc(BYTE *src, const BYTE *dst, const int len)
 {
@@ -20,5 +21,6 @@ void		*DetourFunc(BYTE *src, const BYTE *dst, const int len)
 void		initDebug()
 {
 	initPacketLog();
+	initDebugStr();
 	DetourFunc((BYTE *)0x0046A3EA, (BYTE *)hkCoord, 5);
 }
