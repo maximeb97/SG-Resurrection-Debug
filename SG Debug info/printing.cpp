@@ -5,31 +5,39 @@
 #include "printing.h"
 #include "DebugStr.h"
 
+t_syntax	syntax[4] =
+{
+	{"S:", 1},
+	{"R:", 2},
+	{"NETWORK", 2},
+	{0, 3}
+};
+
 void				print_PlayerPos()
 {
 	t_position		*pos;
 
 	pos = getPosition();
-	mvprintw(1, C_WIDTH - 19, "Player Pos %08x", pos);
-	mvprintw(2, C_WIDTH - 17, "  _______________");
-	mvprintw(3, C_WIDTH - 17, "X |");
-	mvprintw(4, C_WIDTH - 17, "Y |");
-	mvprintw(5, C_WIDTH - 17, "Z |");
-	mvprintw(6, C_WIDTH - 17, "  |______________");
+	mvprintw(COORD_X - 2, COORD_H_POS - 6, "Player Pos %08x", pos);
+	mvprintw(COORD_X - 1, COORD_H_POS - 4, "  _______________");
+	mvprintw(COORD_X, COORD_H_POS - 4, "X |");
+	mvprintw(COORD_Y, COORD_H_POS - 4, "Y |");
+	mvprintw(COORD_Z, COORD_H_POS - 4, "Z |");
+	mvprintw(COORD_Z + 1, COORD_H_POS - 4, "  |______________");
 	if (pos != 0)
 	{
-		mvprintw(3, C_WIDTH - 13, "%.3f  ", pos->x);
-		mvprintw(4, C_WIDTH - 13, "%.3f  ", pos->y);
-		mvprintw(5, C_WIDTH - 13, "%.3f  ", pos->z);
+		mvprintw(COORD_X, COORD_H_POS, "%.3f  ", pos->x);
+		mvprintw(COORD_Y, COORD_H_POS, "%.3f  ", pos->y);
+		mvprintw(COORD_Z, COORD_H_POS, "%.3f  ", pos->z);
 	}
 }
 
 void		print_PacketInfo()
 {
 
-	mvprintw(C_HEIGHT - 3, 0, "Packet Received: %d", getPacketRecvCount());
-	mvprintw(C_HEIGHT - 2, 0, "Packet Send: %d", getPacketSendCount());
-	mvprintw(C_HEIGHT - 1, 0, "Saved in \"PacketLog.txt\"");
+	mvprintw(PACKET_H_RECV, PACKET_W, "Packet Received: %d", getPacketRecvCount());
+	mvprintw(PACKET_H_SEND, PACKET_W, "Packet Send: %d", getPacketSendCount());
+	mvprintw(PACKET_H_SAVE, PACKET_W, "Saved in \"PacketLog.txt\"");
 }
 
 void		print_border()
@@ -65,22 +73,75 @@ void		print_border()
 	}
 }
 
-void		print_debuginfo()
+void		color_info(char *info, int on)
 {
 	int		i;
-	char	*tmp;
-	char	**debugstr;
+	int		col;
 
-	if ((debugstr = get_debug()) == 0)
-		return ;
-	mvprintw(2, 3, "Debug Info | Saved in \"DebugLog.txt\"");
 	i = 0;
-	while (debugstr[i] != 0)
+	while (syntax[i].syntax != 0)
 	{
-		if (strlen(debugstr[i]) > C_WIDTH - 23)
-			debugstr[i][C_WIDTH - 23] = 0;
-		mvprintw(i + 4, 3, "%s", debugstr[i]);
+		if (strncmp(info, syntax[i].syntax, strlen(syntax[i].syntax)) == 0)
+			break;
 		i = i + 1;
 	}
+	col = syntax[i].color;
+	if (on == 1)
+		attron(COLOR_PAIR(col));
+	else
+		attroff(COLOR_PAIR(col));
+}
+
+void		print_info(char **info, int send, int recv)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (info[j] != 0 && i < C_HEIGHT - 9)
+	{
+		if (strlen(info[j]) > C_WIDTH - 23)
+			info[j][C_WIDTH - 23] = 0;
+		color_info(info[j], 1);
+		if (info[j][1] == ':' && ((info[j][0] == 'S' && send == 0) || (info[j][0] == 'R' && recv == 0)))
+			i = i - 1;
+		else
+			mvprintw(i + 4, 3, "%s", info[j]);
+		color_info(info[j], 0);
+		i = i + 1;
+		j = j + 1;
+	}
+}
+
+void		print_menu(int tab, int send, int recv)
+{
+	int		i;
+	char	**info = 0;
+
+	if (tab == 0)
+		info = get_debug();
+	else if (tab == 1)
+		info = get_packet();
+	if (info == 0)
+		return ;
+	if (tab == 0)
+		attron(A_REVERSE);
+	mvprintw(2, 3, "Debug Info | Saved in \"DebugLog.txt\"");
+	attroff(A_REVERSE);
+	mvprintw(2, 40, "- ");
+	if (tab == 1)
+		attron(A_REVERSE);
+	mvprintw(2, 42, "Packets");
+	attroff(A_REVERSE);
+	if (send == 1)
+		attron(A_REVERSE);
+	mvprintw(2, 50, "S");
+	attroff(A_REVERSE);
+	if (recv == 1)
+		attron(A_REVERSE);
+	mvprintw(2, 52, "R");
+	attroff(A_REVERSE);
+	print_info(info, send, recv);
 	print_border();
 }

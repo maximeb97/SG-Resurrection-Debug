@@ -39,6 +39,8 @@ void WINAPI					MyOutputDebugString(LPCTSTR lpOutputString)
 		tmp = tmp2;
 		i = i + 1;
 	}
+	if (tmp != 0)
+		free(tmp);
 	_asm popad;
 }
 
@@ -58,6 +60,6 @@ void						initDebugStr()
 	dwOutputDebugString = (DWORD)GetProcAddress(LoadLibraryA("Kernel32.dll"), "OutputDebugStringA");
 	DetourFunction((PBYTE)dwIsDebuggerPresent, (PBYTE)MyIsDebuggerPresent);
 	DetourFunction((PBYTE)dwOutputDebugString, (PBYTE)MyOutputDebugString);
-	debugstr = (char **)malloc(sizeof(char *) * (C_WIDTH - 8));
+	debugstr = (char **)malloc(sizeof(char *) * (C_HEIGHT));
 	debugstr[0] = 0;
 }

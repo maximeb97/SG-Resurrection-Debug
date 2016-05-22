@@ -18,11 +18,20 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 ### Packets log
 	- Output (send)
 	- Input (recv)
-	- Saved in file "PacketLog.txt", format "%02x ..."
+	- Saved in file "PacketLog.txt", format "[0xID] %02x ..."
+	- Shown in the "Packets" menu:
+	 	- 'S' -> sended packets
+	 	- 'R' -> received packets
 
 ### Game debug message
-	- Game debug message
+	- Shown in the "Debug Info" menu
 	- Saved in file "DebugLog.txt"
+
+### Keys
+	- Left arrow -> Show packets
+	- Right arrow -> Show debug messages
+	- Up arrow -> Show / Hide sended
+	- Down arrow -> Show / Hide received packets
 
 ---
 
@@ -38,7 +47,8 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 
 ## Screen
 
-![](http://i.imgur.com/FhV8SpV.png)
+![](http://i.imgur.com/IcYdzj8.png)
+![](http://i.imgur.com/jU56Lbn.png)
 
 ---
 
@@ -46,3 +56,4 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 
 Maxime Betemps (betemp_a)
 
+Astropilot -> Debug Infos

@@ -5,6 +5,8 @@
 
 void			initCurses()
 {
+	WINDOW		*w;
+
 	if (!AllocConsole())
 	{
 		FreeConsole();
@@ -13,14 +15,46 @@ void			initCurses()
 	}
 	system("mode 120,45");
 	SetConsoleTitleA("Street Gears Resurrection Debug");
-	initscr();
+	w = initscr();
+	start_color();
 	noecho();
+	keypad(w, true);
+	nodelay(w, true);
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+}
+
+/*
+** TODO:
+** Use 'while' instead of 'if'
+*/
+void			get_hotkey(int *tab, int *send, int *recv)
+{
+	int			key;
+
+	if ((key = getch()) == KEY_RIGHT)
+		*tab = 1;
+	else if (key == KEY_LEFT)
+		*tab = 0;
+	else if (key == KEY_UP)
+		*send = (*send == 0);
+	else if (key == KEY_DOWN)
+		*recv = (*recv == 0);
+	else if (key == 't')
+	{
+		//Enable teleport menu
+	}
 }
 
 int				MainThread()
 {
 	LPSTR		cmdLine;
+	int			tab;
+	int			send = 1;
+	int			recv = 1;
 
+	tab = 0;
 	cmdLine = GetCommandLineA();
 	if (strstr(cmdLine, "/debug") > 0)
 	{
@@ -28,7 +62,9 @@ int				MainThread()
 		initDebug();
 		while (1)
 		{
-			print_debuginfo();
+			get_hotkey(&tab, &send, &recv);
+			clear();
+			print_menu(tab, send, recv);
 			print_PlayerPos();
 			print_PacketInfo();
 			refresh();
