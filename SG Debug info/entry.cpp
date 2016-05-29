@@ -23,6 +23,7 @@ void			initCurses()
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
 	init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(4, COLOR_GREEN, COLOR_BLACK);
 }
 
 /*
@@ -42,9 +43,9 @@ void			get_hotkey(int *tab, int *send, int *recv)
 	else if (key == KEY_DOWN)
 		*recv = (*recv == 0);
 	else if (key == 't')
-	{
-		//Enable teleport menu
-	}
+		change_coord();
+	else if (key == 'h')
+		help_menu();
 }
 
 int				MainThread()
@@ -64,6 +65,7 @@ int				MainThread()
 		{
 			get_hotkey(&tab, &send, &recv);
 			clear();
+			mvprintw(0, 0, "Press 'h' for help");
 			print_menu(tab, send, recv);
 			print_PlayerPos();
 			print_PacketInfo();

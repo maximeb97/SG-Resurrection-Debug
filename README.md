@@ -32,6 +32,8 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 	- Right arrow -> Show debug messages
 	- Up arrow -> Show / Hide sended
 	- Down arrow -> Show / Hide received packets
+	- 't' -> Change the player position
+	- 'h' -> Display help menu
 
 ---
 
@@ -47,13 +49,37 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 
 ## Screen
 
-![](http://i.imgur.com/IcYdzj8.png)
-![](http://i.imgur.com/jU56Lbn.png)
+![](http://image.prntscr.com/image/f250424eac974a30a0ce5d2f0f44aed3.png)
+![](http://image.prntscr.com/image/746a8f69d404472fa465a69332e7755f.png)
 
 ---
 
+## Changelog
+```
+[29 / 05 / 2016]
+- Added Changelog (README)
+- Added help menu
+- It's now possible to change the coordinates
+
+[22 / 05 / 2016]
+- Added packet view
+- Added colors in debug info and packets view
+
+[13 / 05 / 2016]
+- Added log of debug informations
+- Added memory address of player position
+
+[19 / 04 / 2016]
+- Added README.MD
+- Some small modifications
+
+[19 / 03 / 2016]
+- Packet log
+- Show coordinates
+```
+
 ### Made by
 
-Maxime Betemps (betemp_a)
+maximeb97
 
 Astropilot -> Debug Infos
