@@ -26,6 +26,40 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 ### Game debug message
 	- Shown in the "Debug Info" menu
 	- Saved in file "DebugLog.txt"
+	- Filter debug messages ("dbg_blacklist.txt")
+	- Highlight debug messages ("dbg_highlight.txt")
+
+#### Blacklist:
+Create "dbg_blacklist.txt" in the game folder. Write on each line a string that you want to filter.
+
+Exemple of "dbg_blacklist.txt":
+````dbg_blacklist.txt
+.nx3
+NX3
+Texture
+s=
+top coll
+szFileName
+````
+
+#### Highlight:
+Create "dbg_highlight.txt" in the game folder. Write on each line the code of the color and the string you want to highlight seperated with a space.
+
+Exemple of "dbg_highlight.txt":
+````dbg_highlight.txt
+2 NETWORK
+4 SelectInvenItem
+````
+
+Color code:
+````
+0 : White
+1 : Cyan
+2 : Magenta
+3 : Yellow
+4 : Green
+5 : Red
+````
 
 ### Keys
 	- Left arrow -> Show packets
