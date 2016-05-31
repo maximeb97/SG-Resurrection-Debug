@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "printing.h"
 
+
 void			initCurses()
 {
 	WINDOW		*w;
@@ -24,6 +25,8 @@ void			initCurses()
 	init_pair(2, COLOR_MAGENTA, COLOR_BLACK);
 	init_pair(3, COLOR_YELLOW, COLOR_BLACK);
 	init_pair(4, COLOR_GREEN, COLOR_BLACK);
+	init_pair(5, COLOR_RED, COLOR_BLACK);
+	init_pair(6, COLOR_BLUE, COLOR_BLACK);
 }
 
 /*
@@ -61,6 +64,7 @@ int				MainThread()
 	{
 		initCurses();
 		initDebug();
+		initHighlight();
 		while (1)
 		{
 			get_hotkey(&tab, &send, &recv);

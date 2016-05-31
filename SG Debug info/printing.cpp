@@ -1,17 +1,52 @@
 #include <string.h>
+#include <stdlib.h>
 #include "curses.h"
 #include "coord.h"
 #include "packetlog.h"
 #include "printing.h"
 #include "DebugStr.h"
 
-t_syntax	syntax[4] =
+#pragma warning(disable: 4996)
+
+t_syntax	syntax[3] =
 {
 	{"S:", 1},
 	{"R:", 2},
-	{"NETWORK", 2},
 	{0, 3}
 };
+
+t_syntax	*usr_syntax;
+
+void				initHighlight()
+{
+	FILE					*fd;
+	int						i;
+	char					buf[256];
+	int						len;
+
+	i = 0;
+	if ((fd = fopen("dbg_highlight.txt", "r")) != 0)
+	{
+		while (fgets(buf, sizeof(buf), fd) != 0)
+			i = i + 1;
+		fclose(fd);
+		usr_syntax = (t_syntax *)malloc(sizeof(t_syntax) * i + 1);
+		usr_syntax[i].color = 0;
+		usr_syntax[i].syntax = 0;
+		fd = fopen("dbg_highlight.txt", "r");
+		i = 0;
+		while (fgets(buf, sizeof(buf), fd) != 0)
+		{
+			buf[strlen(buf) - 1] = 0;
+			if (strlen(buf) > 2)
+				buf[1] = 0;
+			usr_syntax[i].color = atoi(buf);
+			usr_syntax[i].syntax = strdup(buf + 3);
+			i = i + 1;
+		}
+		fclose(fd);
+	}
+}
 
 void				print_PlayerPos()
 {
@@ -86,6 +121,13 @@ void		color_info(char *info, int on)
 		i = i + 1;
 	}
 	col = syntax[i].color;
+	i = 0;
+	while (usr_syntax[i].syntax != 0)
+	{
+		if (strstr(info, usr_syntax[i].syntax) != 0 || strncmp(info, usr_syntax[i].syntax, strlen(usr_syntax[i].syntax)) == 0)
+			col = usr_syntax[i].color;
+		i = i + 1;
+	}
 	if (on == 1)
 		attron(COLOR_PAIR(col));
 	else
