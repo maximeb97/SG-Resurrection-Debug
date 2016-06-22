@@ -134,6 +134,9 @@ void		color_info(char *info, int on)
 		attroff(COLOR_PAIR(col));
 }
 
+/*
+** Print information in info (debug info / packet log)
+*/
 void		print_info(char **info, int send, int recv)
 {
 	int		i;

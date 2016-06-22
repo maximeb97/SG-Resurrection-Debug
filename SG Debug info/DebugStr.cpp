@@ -56,6 +56,11 @@ void WINAPI					MyOutputDebugString(LPCTSTR lpOutputString)
 	_asm popad;
 }
 
+void						clear_dbg_string()
+{
+	debugstr[0] = 0;
+}
+
 char						**get_debug()
 {
 	return (debugstr);

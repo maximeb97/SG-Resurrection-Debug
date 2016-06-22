@@ -9,15 +9,17 @@
 #pragma comment(lib, "detours.lib")
 #pragma warning(disable: 4996)
 
-typedef int					(*t_WSA)(SOCKET s, char *buf, int len, int flags);
+typedef int					(WINAPI *t_WSA)(SOCKET s, char *buf, int len, int flags);
 static t_WSA				oWSARecv;
 static t_WSA				oWSASend;
-int							MyWSARecv(SOCKET s, char *buf, int len, int flags);
-int							MyWSASend(SOCKET s, char *buf, int len, int flags);
+int	WINAPI					MyWSARecv(SOCKET s, char *buf, int len, int flags);
+int	WINAPI					MyWSASend(SOCKET s, char *buf, int len, int flags);
 int							packetRecvCount = 0;
 int							packetSendCount = 0;
 FILE						*packetlogs = 0;
 char						**packets = 0;
+
+extern char					**blacklist; // in DebugStr.cpp
 
 char						**get_packet()
 {
@@ -30,23 +32,33 @@ void						record_packet(unsigned char *buf, int len, char type)
 	int						j;
 	char					*tmp;
 	char					*tmp2;
+	char					*packet_byte;
 
 	if (len <= 4)
 		return ;
 
 	tmp = packets[0];
-	packets[0] = (char *)malloc(len * 3 + 1);
-	sprintf(packets[0], "%c:", type);
-	sprintf(packets[0] + 2, "[%02x%02x] ", buf[4], buf[3]);
+	packet_byte = (char *)malloc(len * 3 + 1);
+	sprintf(packet_byte, "%c:", type);
+	sprintf(packet_byte + 2, "[%02x%02x] ", buf[4], buf[3]);
 	i = 5;
 	j = 9;
 	while (i < len)
 	{
-		sprintf(packets[0] + j, "%02x ", buf[i]);
+		sprintf(packet_byte + j, "%02x ", buf[i]);
 		i = i + 1;
 		j = j + 3;
 	}
-	packets[0][j] = 0;
+	packet_byte[j] = 0;
+
+	j = 0;
+	while (blacklist[j] != 0)
+	{
+		if (strstr(packet_byte, blacklist[j]) != 0 || strncmp(packet_byte, blacklist[j], strlen(blacklist[j])) == 0)
+			return ;
+		j = j + 1;
+	}
+	packets[0] = packet_byte;
 	i = 1;
 	while (i != C_HEIGHT - 9)
 	{
@@ -64,13 +76,14 @@ int							getPacketRecvCount()
 	return (packetRecvCount);
 }
 
-int							MyWSARecv(SOCKET s, char *buf, int len, int flags)
+int	WINAPI						MyWSARecv(SOCKET s, char *buf, int len, int flags)
 {
 	int						i;
 	unsigned char			*ubuf;
+	int						ret;
 
 	ubuf = (unsigned char *)buf;
-	_asm pushad;
+	ret = oWSARecv(s, buf, len, flags);
 	packetRecvCount = packetRecvCount + 1;
 	record_packet(ubuf, len, 'R');
 	fwrite("Recv: ", 1, 6, packetlogs);
@@ -87,8 +100,7 @@ int							MyWSARecv(SOCKET s, char *buf, int len, int flags)
 		i = i + 1;
 	}
 	fprintf(packetlogs, "\n");
-	_asm popad;
-	return (oWSARecv(s, buf, len, flags));
+	return (ret);
 }
 
 int							getPacketSendCount()
@@ -96,13 +108,14 @@ int							getPacketSendCount()
 	return (packetSendCount);
 }
 
-int							MyWSASend(SOCKET s, char *buf, int len, int flags)
+int	WINAPI					MyWSASend(SOCKET s, char *buf, int len, int flags)
 {
 	int						i;
 	unsigned char			*ubuf;
+	int						ret;
 
 	ubuf = (unsigned char *)buf;
-	_asm pushad;
+	ret = oWSASend(s, buf, len, flags);
 	packetSendCount = packetSendCount + 1;
 	record_packet(ubuf, len, 'S');
 	fwrite("Send: ", 1, 6, packetlogs);
@@ -119,8 +132,7 @@ int							MyWSASend(SOCKET s, char *buf, int len, int flags)
 		i = i + 1;
 	}
 	fprintf(packetlogs, "\n");
-	_asm popad;
-	return (oWSASend(s, buf, len, flags));
+	return (ret);
 }
 
 void						initPacketLog()

@@ -2,6 +2,7 @@
 #include "curses.h"
 #include "debug.h"
 #include "printing.h"
+#include "DebugStr.h"
 
 
 void			initCurses()
@@ -49,6 +50,8 @@ void			get_hotkey(int *tab, int *send, int *recv)
 		change_coord();
 	else if (key == 'h')
 		help_menu();
+	else if (key == 'c')
+		clear_dbg_string();
 }
 
 int				MainThread()

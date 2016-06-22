@@ -22,6 +22,8 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 	- Shown in the "Packets" menu:
 	 	- 'S' -> sended packets
 	 	- 'R' -> received packets
+	- Filter debug messages ("dbg_blacklist.txt")
+	- Highlight debug messages ("dbg_highlight.txt")
 
 ### Game debug message
 	- Shown in the "Debug Info" menu
@@ -31,6 +33,7 @@ Start the game with `/debug` parameter, the debug console will be loaded automat
 
 #### Blacklist:
 Create "dbg_blacklist.txt" in the game folder. Write on each line a string that you want to filter.
+It works for debug messages and packets log.
 
 Exemple of "dbg_blacklist.txt":
 ````dbg_blacklist.txt
@@ -44,6 +47,7 @@ szFileName
 
 #### Highlight:
 Create "dbg_highlight.txt" in the game folder. Write on each line the code of the color and the string you want to highlight seperated with a space.
+It works for debug messages and packets log.
 
 Exemple of "dbg_highlight.txt":
 ````dbg_highlight.txt
@@ -68,6 +72,7 @@ Color code:
 	- Down arrow -> Show / Hide received packets
 	- 't' -> Change the player position
 	- 'h' -> Display help menu
+	- 'c' -> Clear displayed informations
 
 ---
 
@@ -90,10 +95,14 @@ Color code:
 
 ## Changelog
 ```
+[22 / 06 / 2016]
+- Added a clear option (see "Keys" section)
+- Blacklist now works with packets log
+
 [29 / 05 / 2016]
 - Added Changelog (README)
-- Added help menu
-- It's now possible to change the coordinates
+- Added help menu (see "Keys" section)
+- It's now possible to change the coordinates  (see "Keys" section)
 
 [22 / 05 / 2016]
 - Added packet view
