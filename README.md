@@ -95,6 +95,9 @@ Color code:
 
 ## Changelog
 ```
+[27 / 06 / 2016]
+- Fixed a porblem with packet display
+
 [22 / 06 / 2016]
 - Added a clear option (see "Keys" section)
 - Blacklist now works with packets log

@@ -36,12 +36,10 @@ void						record_packet(unsigned char *buf, int len, char type)
 
 	if (len <= 4)
 		return ;
-
-	tmp = packets[0];
 	packet_byte = (char *)malloc(len * 3 + 1);
 	sprintf(packet_byte, "%c:", type);
-	sprintf(packet_byte + 2, "[%02x%02x] ", buf[4], buf[3]);
-	i = 5;
+	sprintf(packet_byte + 2, "[%02x%02x] ", buf[3], buf[2]);
+	i = 4;
 	j = 9;
 	while (i < len)
 	{
@@ -50,7 +48,6 @@ void						record_packet(unsigned char *buf, int len, char type)
 		j = j + 3;
 	}
 	packet_byte[j] = 0;
-
 	j = 0;
 	while (blacklist[j] != 0)
 	{
@@ -58,6 +55,7 @@ void						record_packet(unsigned char *buf, int len, char type)
 			return ;
 		j = j + 1;
 	}
+	tmp = packets[0];
 	packets[0] = packet_byte;
 	i = 1;
 	while (i != C_HEIGHT - 9)
